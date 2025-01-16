@@ -15,6 +15,7 @@ public class ImageUtils {
 
     /**
      * Base64 이미지를 바이너리(InputStream) 형태로 변환
+     *
      * @param base64Image Base64로 인코딩 된 이미지 문자열
      * @return InputStream
      */
@@ -26,6 +27,7 @@ public class ImageUtils {
 
     /**
      * 바이너리 형태 이미지를 InputStream으로 변환
+     *
      * @param imageBytes 이미지 바이너리 데이터
      * @return InputStream
      */
