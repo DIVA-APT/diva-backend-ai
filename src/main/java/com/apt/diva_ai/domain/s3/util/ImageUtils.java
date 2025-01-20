@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Base64;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -39,5 +40,10 @@ public class ImageUtils {
     public InputStream downloadImageToInputStream(String url) {
         byte[] imageBytes = restTemplate.getForObject(url, byte[].class);
         return new ByteArrayInputStream(imageBytes);
+    }
+
+    // url 이미지 다운로드 후 응답 객체 반환
+    public ResponseEntity<byte[]> downloadImageToObject(String url) {
+        return restTemplate.getForEntity(url, byte[].class);
     }
 }
