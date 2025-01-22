@@ -25,14 +25,13 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # SSH key, SCP 설치
-      - name: Install SSH key and SCP tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y openssh-client
-          echo $SERVER_SSH_KEY > private_key
-          chmod 600 private_key
-          pwd
+      #      # SSH key, SCP 설치
+      #      - name: Install SSH key and SCP tools
+      #        run: |
+      #          sudo apt-get update
+      #          sudo apt-get install -y openssh-client
+      #          echo $SERVER_SSH_KEY > private_key
+      #          chmod 600 private_key
 
       # 빌드에 포함되는 필수 리소스 파일 다운로드 (with scp)
       - name: Download necessary file
@@ -42,7 +41,7 @@ jobs:
           username: ${{ env.SERVER_USERNAME }}
           key: ${{ env.SERVER_SSH_KEY }}
           port: ${{ env.SERVER_SSH_PORT }}
-          source: "/home/$SERVER_USERNAME/server/resources/*"
+          source: "/home/${{ env.SERVER_USERNAME }}/server/resources/*"
           target: "src/main/resources"
 
       # jar 빌드
@@ -53,12 +52,12 @@ jobs:
       - name: Copy jar file to remote server
         uses: appleboy/scp-action@master
         with:
-            host: ${{ env.SERVER_IP }}
-            username: ${{ env.SERVER_USERNAME }}
-            key: ${{ env.SERVER_SSH_KEY }}
-            port: ${{ env.SERVER_SSH_PORT }}
-            source: "build/libs/diva_apt_ai.jar"
-            target: "/home/$SERVER_USERNAME/server"
+          host: ${{ env.SERVER_IP }}
+          username: ${{ env.SERVER_USERNAME }}
+          key: ${{ env.SERVER_SSH_KEY }}
+          port: ${{ env.SERVER_SSH_PORT }}
+          source: "build/libs/diva_apt_ai.jar"
+          target: "/home/${{ env.SERVER_USERNAME }}/server"
 
       # AI 모델 레포 최신화
       - name: Refresh AI model repo
@@ -77,7 +76,7 @@ jobs:
               git pull origin main
               cd
             fi
-            
+      
 
       # 배포 (daemon)
       - name: Deploy application
