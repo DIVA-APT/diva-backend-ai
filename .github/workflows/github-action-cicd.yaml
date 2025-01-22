@@ -36,7 +36,7 @@ jobs:
       # 빌드에 포함되는 필수 리소스 파일 다운로드
       - name: Download necessary file
         run: |
-          scp -P $SERVER_PORT -i private_key -r $SERVER_USERNAME@$SERVER_IP:/home/$SERVER_USERNAME/server/resources src/main
+          scp -P $SERVER_SSH_PORT -i private_key -r $SERVER_USERNAME@$SERVER_IP:/home/$SERVER_USERNAME/server/resources src/main
 
       # jar 빌드
       - name: Build application with Gradle
