@@ -32,6 +32,12 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+bootJar {
+	archivesBaseName = 'diva-apt-backend-ai'
+	archiveFileName = 'diva_apt_ai.jar'
+	archiveVersion = "0.0.1"
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
