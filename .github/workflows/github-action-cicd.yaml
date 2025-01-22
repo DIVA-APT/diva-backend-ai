@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - cicd-test
 
 jobs:
   build-and-deploy:
@@ -22,6 +23,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '17'
+          distribution: 'temurin'
 
       # SSH key, SCP 설치
       - name: Install SSH key and SCP tools
