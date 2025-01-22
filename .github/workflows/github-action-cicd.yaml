@@ -33,6 +33,12 @@ jobs:
       #          echo $SERVER_SSH_KEY > private_key
       #          chmod 600 private_key
 
+      # 디버그용
+      - name: Debug paths
+        run: |
+          ls
+          pwd
+
       # 빌드에 포함되는 필수 리소스 파일 다운로드 (with scp)
       - name: Download necessary file
         uses: appleboy/scp-action@master
@@ -41,8 +47,8 @@ jobs:
           username: ${{ env.SERVER_USERNAME }}
           key: ${{ env.SERVER_SSH_KEY }}
           port: ${{ env.SERVER_SSH_PORT }}
-          source: "/home/${{ env.SERVER_USERNAME }}/server/resources/*"
-          target: "src/main/resources"
+          source: "/home/${{ env.SERVER_USERNAME }}/server/resources"
+          target: "src/main"
 
       # jar 빌드
       - name: Build application with Gradle
