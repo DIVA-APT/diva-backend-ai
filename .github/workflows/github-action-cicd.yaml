@@ -99,4 +99,4 @@ jobs:
           key: ${{ env.SERVER_SSH_KEY }}
           port: ${{ env.SERVER_SSH_PORT }}
           script: |
-            sudo systemctl restart diva-spring
+            sudo systemctl restart diva-ai-spring
