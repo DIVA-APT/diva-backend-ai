@@ -38,6 +38,8 @@ jobs:
         run: |
           ls
           pwd
+          ls src
+          ls src/main
 
       # 빌드에 포함되는 필수 리소스 파일 다운로드 (with scp)
       - name: Download necessary file
@@ -82,7 +84,6 @@ jobs:
               git pull origin main
               cd
             fi
-      
 
       # 배포 (daemon)
       - name: Deploy application
