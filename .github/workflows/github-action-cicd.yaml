@@ -14,6 +14,7 @@ jobs:
       SERVER_IP: ${{ secrets.SERVER_IP }}
       SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
       SERVER_SSH_PORT: ${{ secrets.SERVER_SSH_PORT }}
+      APPLICATION_PROPERTIES: ${{ secrets.APPLICATION_PROPERTIES }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,16 +42,20 @@ jobs:
           ls src
           ls src/main
 
-      # 빌드에 포함되는 필수 리소스 파일 다운로드 (with scp)
-      - name: Download necessary file
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ env.SERVER_IP }}
-          username: ${{ env.SERVER_USERNAME }}
-          key: ${{ env.SERVER_SSH_KEY }}
-          port: ${{ env.SERVER_SSH_PORT }}
-          source: "/home/${{ env.SERVER_USERNAME }}/server/resources"
-          target: "src/main"
+#      # 빌드에 포함되는 필수 리소스 파일 다운로드 (with scp)
+#      - name: Download necessary file
+#        uses: appleboy/scp-action@v0.1.7
+#        with:
+#          host: ${{ env.SERVER_IP }}
+#          username: ${{ env.SERVER_USERNAME }}
+#          key: ${{ env.SERVER_SSH_KEY }}
+#          port: ${{ env.SERVER_SSH_PORT }}
+#          source: "/home/${{ env.SERVER_USERNAME }}/server/resources"
+#          target: "src/main"
+
+      # application.properties 생성
+      - name: Create application.properties
+        run: echo "${{ env.APPLICATION_PROPERTIES }}" > src/main/resources/application.properties
 
       # jar 빌드
       - name: Build application with Gradle
