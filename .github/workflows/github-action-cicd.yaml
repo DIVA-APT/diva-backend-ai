@@ -97,9 +97,11 @@ jobs:
             fi
             
             cd diva-ai-research
-            echo $OPENAI_API_KEY > .env
-            echo $PINECONE_API_KEY >> .env
-            echo $SERVER_IP >> .env
+            echo $SERVER_PORT
+            echo ${SERVER_PORT}
+            echo "${SERVER_PORT}"
+            echo "${OPENAI_API_KEY}" > .env
+            echo "${PINECONE_API_KEY}" >> .env
 
   deploy:
     runs-on: ubuntu-latest
