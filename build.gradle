@@ -39,7 +39,7 @@ dependencies {
 }
 
 bootJar {
-	archivesBaseName = 'diva-apt-backend-ai'
+//	archivesBaseName = 'diva-apt-backend-ai'
 	archiveFileName = 'diva_apt_ai.jar'
 	archiveVersion = "0.0.1"
 }
