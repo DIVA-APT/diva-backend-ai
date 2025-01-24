@@ -96,12 +96,10 @@ jobs:
               git clone https://github.com/DIVA-APT/diva-ai-research
             fi
             
-            cd diva-ai-research
-            echo $SERVER_PORT
-            echo ${SERVER_PORT}
-            echo "${SERVER_PORT}"
+            cd ~/diva-ai-research
             echo "${OPENAI_API_KEY}" > .env
             echo "${PINECONE_API_KEY}" >> .env
+            echo $SERVER_PORT > .env
 
   deploy:
     runs-on: ubuntu-latest
