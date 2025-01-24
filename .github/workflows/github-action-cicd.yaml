@@ -63,7 +63,7 @@ jobs:
 
       # jar 빌드
       - name: 빌드
-        run: ./gradlew clean build
+        run: ./gradlew clean build --warning-mode all
 
       # 원격 서버로 jar 파일 업로드 (with scp)
       - name: 원격 서버로 jar 파일 업로드
