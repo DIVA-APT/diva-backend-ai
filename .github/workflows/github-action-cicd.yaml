@@ -89,7 +89,8 @@ jobs:
           key: ${{ env.SERVER_SSH_KEY }}
           port: ${{ env.SERVER_SSH_PORT }}
           script: |
-            if [ -d "/home/$SERVER_USERNAME/diva-ai-research" ]; then
+            dir="/home/$SERVER_USERNAME/diva-ai-research"
+            if [ -d "$dir" ]; then
               cd ~/diva-ai-research
               git pull origin main
             else
