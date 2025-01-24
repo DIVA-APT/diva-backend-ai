@@ -89,8 +89,8 @@ jobs:
           key: ${{ env.SERVER_SSH_KEY }}
           port: ${{ env.SERVER_SSH_PORT }}
           script: |
-            dir="/home/$SERVER_USERNAME/diva-ai-research"
-            if [ -d "$dir" ]; then
+            cd
+            if [ -d "./diva-ai-research" ]; then
               cd ~/diva-ai-research
               git pull origin main
             else
@@ -98,8 +98,8 @@ jobs:
             fi
             
             cd ~/diva-ai-research
-            echo $OPENAI_API_KEY > .env
-            echo $PINECONE_API_KEY >> .env
+            echo ${{ env.OPENAI_API_KEY }} > .env
+            echo ${{ env.PINECONE_API_KEY }} >> .env
 
   deploy:
     runs-on: ubuntu-latest
