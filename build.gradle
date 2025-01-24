@@ -38,6 +38,12 @@ dependencies {
     implementation 'javax.xml.bind:jaxb-api:2.3.0'
 }
 
+bootJar {
+	archivesBaseName = 'diva-apt-backend-ai'
+	archiveFileName = 'diva_apt_ai.jar'
+	archiveVersion = "0.0.1"
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }
