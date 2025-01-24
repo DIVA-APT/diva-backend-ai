@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class InferenceResponseDTO {
     private String financial;
-    private String economy;
-    private String social;
-    private String analysis;
     private String news;
+    private String analysis;
+    private String social;
     private ReportDTO report;
 }

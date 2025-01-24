@@ -54,7 +54,7 @@ public class InferenceServiceImpl implements InferenceService {
                 }
             }
 
-            ProcessBuilder pb = new ProcessBuilder("python3", scriptPath, stockName);
+            ProcessBuilder pb = new ProcessBuilder(scriptPath, stockName);
             pb.redirectErrorStream(true);
 
             Process process = pb.start();
