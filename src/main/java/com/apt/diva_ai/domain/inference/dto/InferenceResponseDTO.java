@@ -9,6 +9,6 @@ public class InferenceResponseDTO {
     private String financial;
     private String news;
     private String analysis;
-    private String social;
+    private String economy;
     private ReportDTO report;
 }
