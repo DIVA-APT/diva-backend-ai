@@ -1,8 +1,9 @@
 package com.apt.diva_ai.domain.inference.service;
 
-import com.apt.diva_ai.domain.inference.dto.InferenceResponseDTO;
+import com.apt.diva_ai.domain.stock.entity.Stock;
+import com.apt.diva_ai.global.enums.Category;
 
 public interface InferenceService {
 
-    InferenceResponseDTO processInferenceResults(String stockName);
+    Long processInferenceResults(Stock stock, Category category);
 }

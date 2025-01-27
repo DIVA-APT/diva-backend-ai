@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class InferenceResponseDTO {
+public class ScriptResponseDTO {
     private String financial;
     private String news;
     private String analysis;
