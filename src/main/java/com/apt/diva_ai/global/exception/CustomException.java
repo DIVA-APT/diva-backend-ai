@@ -1,6 +1,6 @@
-package com.apt.diva_ai.exception;
+package com.apt.diva_ai.global.exception;
 
-import com.apt.diva_ai.exception.errorCode.ErrorCode;
+import com.apt.diva_ai.global.exception.errorCode.ErrorCode;
 import lombok.Getter;
 
 @Getter
