@@ -9,6 +9,7 @@ import com.apt.diva_ai.domain.report.entity.Report;
 import com.apt.diva_ai.domain.source.entity.Source;
 import com.apt.diva_ai.domain.stock.entity.Stock;
 import com.apt.diva_ai.global.entity.BaseTime;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -48,7 +49,7 @@ public class AnalysisResult extends BaseTime {
     @JoinColumn(name = "investment_movement_id")
     private InvestmentMovement investmentMovement;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "expert_analysis_id")
     private ExpertAnalysis expertAnalysis;
 
@@ -63,4 +64,25 @@ public class AnalysisResult extends BaseTime {
     @OneToOne
     @JoinColumn(name = "macroeconomics_id")
     private Macroeconomics macroeconomics;
+
+    public void setFinancial(Financial financial) {
+        this.financial = financial;
+    }
+
+    public void setNews(News news) {
+        this.news = news;
+    }
+
+    public void setInvestmentMovement(
+        InvestmentMovement investmentMovement) {
+        this.investmentMovement = investmentMovement;
+    }
+
+    public void setExpertAnalysis(ExpertAnalysis expertAnalysis) {
+        this.expertAnalysis = expertAnalysis;
+    }
+
+    public void setMacroeconomics(Macroeconomics macroeconomics) {
+        this.macroeconomics = macroeconomics;
+    }
 }
