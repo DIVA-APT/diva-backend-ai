@@ -77,11 +77,12 @@ public class InferenceServiceImpl implements InferenceService {
 
     private String executeScript(String stockName, Category category) {
         try {
-            Path path = Paths.get(scripBasePath);
+            Path path = Paths.get(scripBasePath + getScripName(category));
 
             // 쉘 스크립트 파일 존재 여부 확인
             if (!Files.exists(path)) {
-                throw new CustomException(ScriptErrorCode.SHELL_SCRIPT_NOT_FOUND, scripBasePath);
+                throw new CustomException(ScriptErrorCode.SHELL_SCRIPT_NOT_FOUND,
+                    scripBasePath + getScripName(category));
             }
 
             // 실행 권한 확인 및 설정
