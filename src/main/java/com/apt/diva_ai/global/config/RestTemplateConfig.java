@@ -1,4 +1,4 @@
-package com.apt.diva_ai.config;
+package com.apt.diva_ai.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,8 +1,11 @@
 package com.apt.diva_ai.domain.inference.service;
 
-import com.apt.diva_ai.domain.inference.dto.InferenceResponseDTO;
-import com.apt.diva_ai.exception.CustomException;
-import com.apt.diva_ai.exception.errorCode.ScriptErrorCode;
+import com.apt.diva_ai.domain.analysis.service.AnalysisResultService;
+import com.apt.diva_ai.domain.inference.dto.ScriptResponseDTO;
+import com.apt.diva_ai.domain.stock.entity.Stock;
+import com.apt.diva_ai.global.enums.Category;
+import com.apt.diva_ai.global.exception.CustomException;
+import com.apt.diva_ai.global.exception.errorCode.ScriptErrorCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.BufferedReader;
@@ -21,28 +24,65 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class InferenceServiceImpl implements InferenceService {
 
-    @Value("${script.path}")
-    private String scriptPath;
+    @Value("${script.base.path}")
+    private String scripBasePath;
+
+    @Value("${script.name.for.expert.analysis}")
+    private String scripNameForExpertAnalysis;
+
+    @Value("${script.name.for.financial}")
+    private String scripNameForFinancial;
+
+    @Value("${script.name.for.macroeconomics}")
+    private String scripNameForMacroeconomics;
+
+    @Value("${script.name.for.investment.movement}")
+    private String scripNameForInvestmentMovement;
+
+    @Value("${script.name.for.news}")
+    private String scripNameForNews;
+
+    private final AnalysisResultService analysisResultService;
 
     @Override
-    public InferenceResponseDTO processInferenceResults(String stockName) {
-        String inferenceResult = executeScript(stockName);
+    public Long processInferenceResults(Stock stock, Category category) {
+        String inferenceResult = executeScript(stock.getCompanyName(), category);
 
+        ScriptResponseDTO response;
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.readValue(inferenceResult, InferenceResponseDTO.class);
+            response = objectMapper.readValue(inferenceResult, ScriptResponseDTO.class);
         } catch (JsonProcessingException e) {
             throw new CustomException("추론 결과 역직렬화 에러");
         }
+
+        return switch (category) {
+            case EXPERT_ANALYSIS -> analysisResultService.upsertResultForExpertAnalysis(stock,
+                    response.getAnalysis())
+                .getAnalysisResultId();
+            case MACROECONOMICS -> analysisResultService.upsertResultForMacroeconomics(stock,
+                    response.getEconomy())
+                .getAnalysisResultId();
+            case FINANCIAL ->
+                analysisResultService.upsertResultForFinancial(stock, response.getFinancial())
+                    .getAnalysisResultId();
+            case NEWS -> analysisResultService.upsertResultForNews(stock, response.getNews())
+                .getAnalysisResultId();
+            case INVESTMENT_MOVEMENT ->
+                analysisResultService.upsertResultForInvestmentMovement(stock, null)
+                    .getAnalysisResultId();
+        };
+
     }
 
-    private String executeScript(String stockName) {
+    private String executeScript(String stockName, Category category) {
         try {
-            Path path = Paths.get(scriptPath);
+            Path path = Paths.get(scripBasePath + getScripName(category));
 
             // 쉘 스크립트 파일 존재 여부 확인
             if (!Files.exists(path)) {
-                throw new CustomException(ScriptErrorCode.SHELL_SCRIPT_NOT_FOUND, scriptPath);
+                throw new CustomException(ScriptErrorCode.SHELL_SCRIPT_NOT_FOUND,
+                    scripBasePath + getScripName(category));
             }
 
             // 실행 권한 확인 및 설정
@@ -54,7 +94,9 @@ public class InferenceServiceImpl implements InferenceService {
                 }
             }
 
-            ProcessBuilder pb = new ProcessBuilder(scriptPath, stockName);
+            ProcessBuilder pb = new ProcessBuilder("python3",
+                scripBasePath + getScripName(category),
+                stockName);
             pb.redirectErrorStream(true);
 
             Process process = pb.start();
@@ -86,5 +128,15 @@ public class InferenceServiceImpl implements InferenceService {
         } catch (Exception e) {
             throw new CustomException("스크립트 실행 에러: " + e.getMessage());
         }
+    }
+
+    private String getScripName(Category category) {
+        return switch (category) {
+            case EXPERT_ANALYSIS -> scripNameForExpertAnalysis;
+            case FINANCIAL -> scripNameForFinancial;
+            case MACROECONOMICS -> scripNameForMacroeconomics;
+            case INVESTMENT_MOVEMENT -> scripNameForInvestmentMovement;
+            case NEWS -> scripNameForNews;
+        };
     }
 }

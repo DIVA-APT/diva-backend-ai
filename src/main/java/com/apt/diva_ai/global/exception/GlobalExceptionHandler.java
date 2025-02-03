@@ -1,4 +1,4 @@
-package com.apt.diva_ai.exception;
+package com.apt.diva_ai.global.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

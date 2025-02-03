@@ -9,5 +9,5 @@ import lombok.Data;
 public class InferenceRequestDTO {
 
     @NotNull
-    private String stockName;
+    private String stockCode;
 }

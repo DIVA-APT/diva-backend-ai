@@ -1,4 +1,4 @@
-package com.apt.diva_ai.config;
+package com.apt.diva_ai.global.config;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;

@@ -1,4 +1,4 @@
-package com.apt.diva_ai.exception.errorCode;
+package com.apt.diva_ai.global.exception.errorCode;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

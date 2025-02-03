@@ -1,4 +1,4 @@
-package com.apt.diva_ai.exception;
+package com.apt.diva_ai.global.exception;
 
 import lombok.Builder;
 import lombok.Getter;
