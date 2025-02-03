@@ -100,8 +100,6 @@ jobs:
             cd ~/diva-ai-research
             echo "OPENAI_API_KEY=${{ env.OPENAI_API_KEY }}" > .env
             echo "PINECONE_API_KEY=${{ env.PINECONE_API_KEY }}" >> .env
-            
-            cp ~/server/main.py .
 
   deploy:
     runs-on: ubuntu-latest
