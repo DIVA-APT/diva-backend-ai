@@ -1,6 +1,7 @@
 package com.apt.diva_ai.domain.inference.service;
 
 import com.apt.diva_ai.domain.analysis.service.AnalysisResultService;
+import com.apt.diva_ai.domain.inference.dto.ChatBotResponseDTO;
 import com.apt.diva_ai.domain.inference.dto.ScriptResponseDTO;
 import com.apt.diva_ai.domain.stock.entity.Stock;
 import com.apt.diva_ai.global.enums.Category;
@@ -80,8 +81,15 @@ public class InferenceServiceImpl implements InferenceService {
     }
 
     @Override
-    public String inferenceChatBot(String input) {
-        return executeScript(input, Category.CHAT_BOT);
+    public ChatBotResponseDTO inferenceChatBot(String input) {
+        String inferenceResult = executeScript(input, Category.CHAT_BOT);
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(inferenceResult, ChatBotResponseDTO.class);
+        } catch (JsonProcessingException e) {
+            throw new CustomException("챗봇 추론 결과 역직렬화 에러");
+        }
     }
 
     private String executeScript(String param, Category category) {
