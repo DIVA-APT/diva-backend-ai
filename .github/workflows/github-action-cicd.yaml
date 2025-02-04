@@ -11,6 +11,7 @@ env:
   SERVER_IP: ${{ secrets.SERVER_IP }}
   SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
   SERVER_SSH_PORT: ${{ secrets.SERVER_SSH_PORT }}
+  HTTP_PORT: ${{ secrets.HTTP_PORT }}
   APPLICATION_PROPERTIES: ${{ secrets.APPLICATION_PROPERTIES }}
   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
   PINECONE_API_KEY: ${{ secrets.PINECONE_API_KEY }}
@@ -63,7 +64,7 @@ jobs:
 
       # jar 빌드
       - name: 빌드
-        run: ./gradlew clean build
+        run: ./gradlew clean build --warning-mode all
 
       # 원격 서버로 jar 파일 업로드 (with scp)
       - name: 원격 서버로 jar 파일 업로드
@@ -100,8 +101,6 @@ jobs:
             cd ~/diva-ai-research
             echo "OPENAI_API_KEY=${{ env.OPENAI_API_KEY }}" > .env
             echo "PINECONE_API_KEY=${{ env.PINECONE_API_KEY }}" >> .env
-            
-            cp ~/server/main.py .
 
   deploy:
     runs-on: ubuntu-latest
@@ -116,4 +115,4 @@ jobs:
           key: ${{ env.SERVER_SSH_KEY }}
           port: ${{ env.SERVER_SSH_PORT }}
           script: |
-            sudo systemctl restart diva-ai-spring
+            systemctl --user restart diva-ai-spring

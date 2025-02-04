@@ -42,6 +42,9 @@ public class InferenceServiceImpl implements InferenceService {
     @Value("${script.name.for.news}")
     private String scripNameForNews;
 
+    @Value("${script.name.for.chat.bot}")
+    private String scriptNameForChatBot;
+
     private final AnalysisResultService analysisResultService;
 
     @Override
@@ -71,11 +74,17 @@ public class InferenceServiceImpl implements InferenceService {
             case INVESTMENT_MOVEMENT ->
                 analysisResultService.upsertResultForInvestmentMovement(stock, null)
                     .getAnalysisResultId();
+            case CHAT_BOT -> null;
         };
 
     }
 
-    private String executeScript(String stockName, Category category) {
+    @Override
+    public String inferenceChatBot(String input) {
+        return executeScript(input, Category.CHAT_BOT);
+    }
+
+    private String executeScript(String param, Category category) {
         try {
             Path path = Paths.get(scripBasePath + getScripName(category));
 
@@ -96,7 +105,7 @@ public class InferenceServiceImpl implements InferenceService {
 
             ProcessBuilder pb = new ProcessBuilder("python3",
                 scripBasePath + getScripName(category),
-                stockName);
+                param);
             pb.redirectErrorStream(true);
 
             Process process = pb.start();
@@ -137,6 +146,7 @@ public class InferenceServiceImpl implements InferenceService {
             case MACROECONOMICS -> scripNameForMacroeconomics;
             case INVESTMENT_MOVEMENT -> scripNameForInvestmentMovement;
             case NEWS -> scripNameForNews;
+            case CHAT_BOT -> scriptNameForChatBot;
         };
     }
 }
