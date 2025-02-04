@@ -1,5 +1,6 @@
 package com.apt.diva_ai.domain.inference.controller;
 
+import com.apt.diva_ai.domain.inference.dto.ChatBotRequestDTO;
 import com.apt.diva_ai.domain.inference.dto.InferenceRequestDTO;
 import com.apt.diva_ai.domain.inference.dto.InferenceResponseDTO;
 import com.apt.diva_ai.domain.inference.service.InferenceService;
@@ -85,5 +86,11 @@ public class InferenceController {
         InferenceResponseDTO response = InferenceResponseDTO.builder().analysisResultId(id).build();
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/chatbot")
+    public String runInferenceForChatBot(@Valid @RequestBody ChatBotRequestDTO request) {
+
+        return inferenceService.inferenceChatBot(request.getInput());
     }
 }
