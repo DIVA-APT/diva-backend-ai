@@ -50,32 +50,6 @@ public class InferenceController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/economy")
-    public ResponseEntity<InferenceResponseDTO> runInferenceForMacroeconomics(
-        @Valid @RequestBody InferenceRequestDTO request) {
-
-        Stock stock = stockService.findStock(request.getStockCode());
-
-        Long id = inferenceService.processInferenceResults(stock, Category.MACROECONOMICS);
-
-        InferenceResponseDTO response = InferenceResponseDTO.builder().analysisResultId(id).build();
-
-        return ResponseEntity.ok(response);
-    }
-
-    @PostMapping("/movement")
-    public ResponseEntity<InferenceResponseDTO> runInferenceForInvestMovement(
-        @Valid @RequestBody InferenceRequestDTO request) {
-
-        Stock stock = stockService.findStock(request.getStockCode());
-
-        Long id = inferenceService.processInferenceResults(stock, Category.INVESTMENT_MOVEMENT);
-
-        InferenceResponseDTO response = InferenceResponseDTO.builder().analysisResultId(id).build();
-
-        return ResponseEntity.ok(response);
-    }
-
     @PostMapping("/news")
     public ResponseEntity<InferenceResponseDTO> runInferenceForNews(
         @Valid @RequestBody InferenceRequestDTO request) {
