@@ -34,12 +34,6 @@ public class InferenceServiceImpl implements InferenceService {
     @Value("${script.name.for.financial}")
     private String scripNameForFinancial;
 
-    @Value("${script.name.for.macroeconomics}")
-    private String scripNameForMacroeconomics;
-
-    @Value("${script.name.for.investment.movement}")
-    private String scripNameForInvestmentMovement;
-
     @Value("${script.name.for.news}")
     private String scripNameForNews;
 
@@ -62,19 +56,13 @@ public class InferenceServiceImpl implements InferenceService {
 
         return switch (category) {
             case EXPERT_ANALYSIS -> analysisResultService.upsertResultForExpertAnalysis(stock,
-                    response.getAnalysis())
-                .getAnalysisResultId();
-            case MACROECONOMICS -> analysisResultService.upsertResultForMacroeconomics(stock,
-                    response.getEconomy())
+                    response.getResultReport())
                 .getAnalysisResultId();
             case FINANCIAL ->
-                analysisResultService.upsertResultForFinancial(stock, response.getFinancial())
+                analysisResultService.upsertResultForFinancial(stock, response.getResultFin())
                     .getAnalysisResultId();
-            case NEWS -> analysisResultService.upsertResultForNews(stock, response.getNews())
+            case NEWS -> analysisResultService.upsertResultForNews(stock, response.getResultNews())
                 .getAnalysisResultId();
-            case INVESTMENT_MOVEMENT ->
-                analysisResultService.upsertResultForInvestmentMovement(stock, null)
-                    .getAnalysisResultId();
             case CHAT_BOT -> null;
         };
 
@@ -151,8 +139,6 @@ public class InferenceServiceImpl implements InferenceService {
         return switch (category) {
             case EXPERT_ANALYSIS -> scripNameForExpertAnalysis;
             case FINANCIAL -> scripNameForFinancial;
-            case MACROECONOMICS -> scripNameForMacroeconomics;
-            case INVESTMENT_MOVEMENT -> scripNameForInvestmentMovement;
             case NEWS -> scripNameForNews;
             case CHAT_BOT -> scriptNameForChatBot;
         };
