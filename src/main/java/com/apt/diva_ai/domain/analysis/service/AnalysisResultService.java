@@ -9,9 +9,5 @@ public interface AnalysisResultService {
 
     AnalysisResult upsertResultForFinancial(Stock stock, String content);
 
-    AnalysisResult upsertResultForMacroeconomics(Stock stock, String content);
-
-    AnalysisResult upsertResultForInvestmentMovement(Stock stock, String content);
-
     AnalysisResult upsertResultForNews(Stock stock, String content);
 }
