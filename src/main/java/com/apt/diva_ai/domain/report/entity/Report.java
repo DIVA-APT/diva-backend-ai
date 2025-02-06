@@ -23,5 +23,6 @@ public class Report extends BaseTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reportId;
 
-    private String reportUrl;
+    @Column(columnDefinition = "TEXT")
+    private String content;
 }
