@@ -43,7 +43,7 @@ public class InferenceServiceImpl implements InferenceService {
     private final AnalysisResultService analysisResultService;
 
     @Override
-    public Long processInferenceResults(Stock stock, Category category) {
+    public Long inferenceCategory(Stock stock, Category category) {
         String inferenceResult = executeScript(stock.getCompanyName(), category);
 
         ScriptResponseDTO response;

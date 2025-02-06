@@ -6,7 +6,7 @@ import com.apt.diva_ai.global.enums.Category;
 
 public interface InferenceService {
 
-    Long processInferenceResults(Stock stock, Category category);
+    Long inferenceCategory(Stock stock, Category category);
 
     ChatBotResponseDTO inferenceChatBot(String input);
 }
