@@ -2,8 +2,6 @@ package com.apt.diva_ai.domain.analysis.entity;
 
 import com.apt.diva_ai.domain.expert.entity.ExpertAnalysis;
 import com.apt.diva_ai.domain.financial.entity.Financial;
-import com.apt.diva_ai.domain.macroeconomics.entity.Macroeconomics;
-import com.apt.diva_ai.domain.movement.entity.InvestmentMovement;
 import com.apt.diva_ai.domain.news.entity.News;
 import com.apt.diva_ai.domain.report.entity.Report;
 import com.apt.diva_ai.domain.source.entity.Source;
@@ -15,7 +13,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,10 +45,6 @@ public class AnalysisResult extends BaseTime {
     @JoinColumn(name = "news_id")
     private News news;
 
-    @OneToOne
-    @JoinColumn(name = "investment_movement_id")
-    private InvestmentMovement investmentMovement;
-
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "expert_analysis_id")
     private ExpertAnalysis expertAnalysis;
@@ -57,13 +53,8 @@ public class AnalysisResult extends BaseTime {
     @JoinColumn(name = "report_id")
     private Report report;
 
-    @OneToOne
-    @JoinColumn(name = "source_id")
-    private Source source;
-
-    @OneToOne
-    @JoinColumn(name = "macroeconomics_id")
-    private Macroeconomics macroeconomics;
+    @OneToMany(mappedBy = "analysisResult")
+    private List<Source> sources;
 
     public void setFinancial(Financial financial) {
         this.financial = financial;
@@ -73,16 +64,7 @@ public class AnalysisResult extends BaseTime {
         this.news = news;
     }
 
-    public void setInvestmentMovement(
-        InvestmentMovement investmentMovement) {
-        this.investmentMovement = investmentMovement;
-    }
-
     public void setExpertAnalysis(ExpertAnalysis expertAnalysis) {
         this.expertAnalysis = expertAnalysis;
-    }
-
-    public void setMacroeconomics(Macroeconomics macroeconomics) {
-        this.macroeconomics = macroeconomics;
     }
 }
