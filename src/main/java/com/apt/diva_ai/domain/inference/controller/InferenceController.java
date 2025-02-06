@@ -28,35 +28,29 @@ public class InferenceController {
     public ResponseEntity<InferenceResponseDTO> runInferenceForExpertAnalysis(
         @Valid @RequestBody InferenceRequestDTO request) {
 
-        Stock stock = stockService.findStock(request.getStockCode());
-
-        Long id = inferenceService.processInferenceResults(stock, Category.EXPERT_ANALYSIS);
-
-        InferenceResponseDTO response = InferenceResponseDTO.builder().analysisResultId(id).build();
-
-        return ResponseEntity.ok(response);
+        return runInference(request, Category.EXPERT_ANALYSIS);
     }
 
     @PostMapping("/financial")
     public ResponseEntity<InferenceResponseDTO> runInferenceForFinancial(
         @Valid @RequestBody InferenceRequestDTO request) {
 
-        Stock stock = stockService.findStock(request.getStockCode());
-
-        Long id = inferenceService.processInferenceResults(stock, Category.FINANCIAL);
-
-        InferenceResponseDTO response = InferenceResponseDTO.builder().analysisResultId(id).build();
-
-        return ResponseEntity.ok(response);
+        return runInference(request, Category.FINANCIAL);
     }
 
     @PostMapping("/news")
     public ResponseEntity<InferenceResponseDTO> runInferenceForNews(
         @Valid @RequestBody InferenceRequestDTO request) {
 
+        return runInference(request, Category.NEWS);
+    }
+
+    private ResponseEntity<InferenceResponseDTO> runInference(InferenceRequestDTO request,
+        Category category) {
+
         Stock stock = stockService.findStock(request.getStockCode());
 
-        Long id = inferenceService.processInferenceResults(stock, Category.NEWS);
+        Long id = inferenceService.inferenceCategory(stock, category);
 
         InferenceResponseDTO response = InferenceResponseDTO.builder().analysisResultId(id).build();
 
