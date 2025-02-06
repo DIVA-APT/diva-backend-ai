@@ -37,15 +37,15 @@ public class AnalysisResult extends BaseTime {
     @JoinColumn(name = "stock_id")
     private Stock stock;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "financial_id")
     private Financial financial;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "news_id")
     private News news;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "expert_analysis_id")
     private ExpertAnalysis expertAnalysis;
 
@@ -53,7 +53,7 @@ public class AnalysisResult extends BaseTime {
     @JoinColumn(name = "report_id")
     private Report report;
 
-    @OneToMany(mappedBy = "analysisResult")
+    @OneToMany(mappedBy = "analysisResult", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Source> sources;
 
     public void setFinancial(Financial financial) {
@@ -66,5 +66,19 @@ public class AnalysisResult extends BaseTime {
 
     public void setExpertAnalysis(ExpertAnalysis expertAnalysis) {
         this.expertAnalysis = expertAnalysis;
+    }
+
+    public void setReport(Report report) {
+        this.report = report;
+    }
+
+    public void addSource(Source source) {
+        this.sources.add(source);
+        source.setAnalysisResult(this);
+    }
+
+    public void removeSource(Source source) {
+        this.getSources().remove(source);
+//        source.setAnalysisResult(null);
     }
 }

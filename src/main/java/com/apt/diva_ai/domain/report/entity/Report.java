@@ -25,4 +25,8 @@ public class Report extends BaseTime {
 
     @Column(columnDefinition = "TEXT")
     private String content;
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 }

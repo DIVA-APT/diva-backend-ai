@@ -7,8 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum Category {
 
-    EXPERT_ANALYSIS("전문가 분석"), FINANCIAL("재무제표"), NEWS("뉴스"), CHAT_BOT("챗봇"),
-    ;
+    EXPERT_ANALYSIS("전문가 분석"), FINANCIAL("재무제표"), NEWS("뉴스"), CHAT_BOT("챗봇"), REPORT("종합 레포트");
 
     private final String title;
 }

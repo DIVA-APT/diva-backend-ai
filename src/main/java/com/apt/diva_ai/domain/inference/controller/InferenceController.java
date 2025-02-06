@@ -58,9 +58,22 @@ public class InferenceController {
     }
 
     @PostMapping("/chatbot")
-    public ChatBotResponseDTO runInferenceForChatBot(
+    public ResponseEntity<ChatBotResponseDTO> runInferenceForChatBot(
         @Valid @RequestBody ChatBotRequestDTO request) {
 
-        return inferenceService.inferenceChatBot(request.getInput());
+        ChatBotResponseDTO response = inferenceService.inferenceChatBot(
+            request.getInput());
+
+        return ResponseEntity.ok().body(response);
+    }
+
+    @PostMapping("/report")
+    public ResponseEntity<InferenceResponseDTO> runInferenceReport(@RequestBody InferenceRequestDTO request) {
+        Stock stock = stockService.findStock(request.getStockCode());
+
+        Long id = inferenceService.inferenceReport(stock);
+        InferenceResponseDTO response = InferenceResponseDTO.builder().analysisResultId(id).build();
+
+        return ResponseEntity.ok().body(response);
     }
 }

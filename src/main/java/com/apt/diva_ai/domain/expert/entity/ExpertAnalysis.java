@@ -34,4 +34,8 @@ public class ExpertAnalysis extends BaseTime {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public void setAnalysisResult(AnalysisResult analysisResult) {
+        this.analysisResult = analysisResult;
+    }
 }

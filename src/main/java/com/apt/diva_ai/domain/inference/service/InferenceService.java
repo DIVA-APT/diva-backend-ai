@@ -9,4 +9,6 @@ public interface InferenceService {
     Long inferenceCategory(Stock stock, Category category);
 
     ChatBotResponseDTO inferenceChatBot(String input);
+
+    Long inferenceReport(Stock stock);
 }

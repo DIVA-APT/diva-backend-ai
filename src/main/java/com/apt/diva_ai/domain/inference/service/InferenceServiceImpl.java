@@ -1,8 +1,12 @@
 package com.apt.diva_ai.domain.inference.service;
 
+import com.apt.diva_ai.domain.analysis.entity.AnalysisResult;
+import com.apt.diva_ai.domain.analysis.repository.AnalysisResultRepository;
 import com.apt.diva_ai.domain.analysis.service.AnalysisResultService;
 import com.apt.diva_ai.domain.inference.dto.ChatBotResponseDTO;
 import com.apt.diva_ai.domain.inference.dto.ScriptResponseDTO;
+import com.apt.diva_ai.domain.report.entity.Report;
+import com.apt.diva_ai.domain.report.repository.ReportRepository;
 import com.apt.diva_ai.domain.stock.entity.Stock;
 import com.apt.diva_ai.global.enums.Category;
 import com.apt.diva_ai.global.exception.CustomException;
@@ -15,6 +19,8 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,11 +46,16 @@ public class InferenceServiceImpl implements InferenceService {
     @Value("${script.name.for.chat.bot}")
     private String scriptNameForChatBot;
 
+    @Value("${script.name.for.report}")
+    private String scriptNameForReport;
+
     private final AnalysisResultService analysisResultService;
+    private final AnalysisResultRepository analysisResultRepository;
+    private final ReportRepository reportRepository;
 
     @Override
     public Long inferenceCategory(Stock stock, Category category) {
-        String inferenceResult = executeScript(stock.getCompanyName(), category);
+        String inferenceResult = executeScript(List.of(stock.getCompanyName()), category);
 
         ScriptResponseDTO response;
         try {
@@ -56,21 +67,23 @@ public class InferenceServiceImpl implements InferenceService {
 
         return switch (category) {
             case EXPERT_ANALYSIS -> analysisResultService.upsertResultForExpertAnalysis(stock,
-                    response.getResultReport())
+                    response)
                 .getAnalysisResultId();
-            case FINANCIAL ->
-                analysisResultService.upsertResultForFinancial(stock, response.getResultFin())
-                    .getAnalysisResultId();
-            case NEWS -> analysisResultService.upsertResultForNews(stock, response.getResultNews())
+            case FINANCIAL -> analysisResultService.upsertResultForFinancial(stock,
+                    response)
+                .getAnalysisResultId();
+            case NEWS -> analysisResultService.upsertResultForNews(stock,
+                    response)
                 .getAnalysisResultId();
             case CHAT_BOT -> null;
+            case REPORT -> null;
         };
 
     }
 
     @Override
     public ChatBotResponseDTO inferenceChatBot(String input) {
-        String inferenceResult = executeScript(input, Category.CHAT_BOT);
+        String inferenceResult = executeScript(List.of(input), Category.CHAT_BOT);
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -80,7 +93,29 @@ public class InferenceServiceImpl implements InferenceService {
         }
     }
 
-    private String executeScript(String param, Category category) {
+    @Override
+    public Long inferenceReport(Stock stock) {
+        AnalysisResult analysisResult = analysisResultRepository.findByStockName(
+            stock.getCompanyName()).orElseThrow(
+            () -> new RuntimeException("분석 결과 데이터가 존재하지 않습니다. 종목명: " + stock.getCompanyName()));
+
+        String scriptResponse = executeScript(List.of(analysisResult.getFinancial().getContent(),
+                analysisResult.getExpertAnalysis().getContent(), analysisResult.getNews().getContent()),
+            Category.REPORT);
+
+        Report report;
+        if (analysisResult.getReport() == null) {
+            report = Report.builder().content(scriptResponse).build();
+        } else {
+            report = analysisResult.getReport();
+        }
+
+        reportRepository.save(report);
+        analysisResult.setReport(report);
+        return analysisResultRepository.save(analysisResult).getAnalysisResultId();
+    }
+
+    private String executeScript(List<String> param, Category category) {
         try {
             Path path = Paths.get(scripBasePath + getScripName(category));
 
@@ -99,9 +134,11 @@ public class InferenceServiceImpl implements InferenceService {
                 }
             }
 
-            ProcessBuilder pb = new ProcessBuilder("python3",
-                scripBasePath + getScripName(category),
-                param);
+            List<String> command = new ArrayList<>();
+            command.add("python3");
+            command.add(scripBasePath + getScripName(category));
+            command.addAll(param);
+            ProcessBuilder pb = new ProcessBuilder(command);
             pb.redirectErrorStream(true);
 
             Process process = pb.start();
@@ -141,6 +178,7 @@ public class InferenceServiceImpl implements InferenceService {
             case FINANCIAL -> scripNameForFinancial;
             case NEWS -> scripNameForNews;
             case CHAT_BOT -> scriptNameForChatBot;
+            case REPORT -> scriptNameForReport;
         };
     }
 }
