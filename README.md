@@ -1,6 +1,7 @@
 # 💌 DIVA (Delivery of Investment Value by AI)
 
 ## 📋 개요
+
 이 프로젝트는 AI 추론 기능을 HTTP API로 제공하고, 이를 도메인 서버로 전달하는 역할을 수행하는 Spring Boot 기반 백엔드 애플리케이션입니다.
 <br>
 RestFul API를 통해 AI 모델의 예측 결과를 제공하며, 추론 데이터 처리 기능을 포함합니다.
@@ -8,18 +9,22 @@ RestFul API를 통해 AI 모델의 예측 결과를 제공하며, 추론 데이�
 ---
 
 ## 🚀 기술 스택
+
 ### **Backend**
+
 - **Spring Boot**
 - **Spring MVC**, **Spring Data JPA**
 - **MySQL**
 - **Naver Cloud VPC**
 
 ### **DevOps**
+
 - CI/CD (GitHub Actions)
 
 ---
 
 ## 📂 폴더 구조
+
 ```
 📚 src
  ┣ 📂 main
@@ -56,6 +61,7 @@ RestFul API를 통해 AI 모델의 예측 결과를 제공하며, 추론 데이�
 [//]: # (```)
 
 [//]: # ()
+
 [//]: # (### **2️⃣ 환경 변수 설정 &#40;`.env` 또는 `application.yml`&#41;**)
 
 [//]: # (```yaml)
@@ -65,6 +71,7 @@ RestFul API를 통해 AI 모델의 예측 결과를 제공하며, 추론 데이�
 [//]: # (  port: 8080)
 
 [//]: # ()
+
 [//]: # (spring:)
 
 [//]: # (  datasource:)
@@ -84,6 +91,7 @@ RestFul API를 통해 AI 모델의 예측 결과를 제공하며, 추론 데이�
 [//]: # (```)
 
 [//]: # ()
+
 [//]: # (### **3️⃣ 실행**)
 
 [//]: # (```sh)
@@ -97,14 +105,42 @@ RestFul API를 통해 AI 모델의 예측 결과를 제공하며, 추론 데이�
 ---
 
 ## 🔥 **주요 기능**
+
 ### ✅ AI 추론
+
 - Python 스크립트를 실행하여 AI 추론 수행
 - 추론 결과를 DB에 저장 및 PK 제공
 
 ---
 
 ## 🏠 **ERD**
+
 <img width="1044" alt="image" src="https://github.com/user-attachments/assets/dc0cec64-a8b2-45aa-8de9-e7947d2c9157" />
 
 ---
 
+## ⚒️ **System Architecture**
+
+<img width="750" alt="image" src="https://github.com/user-attachments/assets/b8bced94-bc39-40c5-9b6a-26c02027e517" />
+
+---
+
+## 🎨️ **UI/UX**
+<div style="display: flex; flex-direction: column;">
+<div style="display: flex; justify-content: center; align-items: center">
+<img width="295" alt="image" src="https://github.com/user-attachments/assets/ed541e8b-8f10-42df-ab1e-f827073782c1" />
+
+<img width="295" alt="image" src="https://github.com/user-attachments/assets/77f481d9-943c-4874-a688-6bc48aa8eb7a" />
+</div>
+
+<div style="display: flex; justify-content: center; align-items: center">
+<img width="295" alt="image" src="https://github.com/user-attachments/assets/cb892865-242d-4aad-95c3-5508f191224d" />
+
+<img width="295" alt="image" src="https://github.com/user-attachments/assets/63443c02-fe05-4a7a-bdca-eb2d7b71acc0" />
+</div>
+<div style="display: flex; justify-content: space-around; align-items: center">
+<img width="161" alt="image" src="https://github.com/user-attachments/assets/67629b72-adab-454d-8b18-1d2b9b6ce38e" />
+
+<img width="151" alt="image" src="https://github.com/user-attachments/assets/26b3b2a1-98b3-4f3d-bcc9-b038ff890bb5" />
+</div>
+</div>
