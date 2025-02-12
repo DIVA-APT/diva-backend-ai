@@ -104,7 +104,7 @@ RestFul API를 통해 AI 모델의 예측 결과를 제공하며, 추론 데이�
 ---
 
 ## 🏠 **ERD**
-<img width="1121" alt="image" src="https://github.com/user-attachments/assets/9e4ad5df-f27c-4746-bb20-b1f32d9f011b" />
+<img width="1044" alt="image" src="https://github.com/user-attachments/assets/dc0cec64-a8b2-45aa-8de9-e7947d2c9157" />
 
 ---
 
